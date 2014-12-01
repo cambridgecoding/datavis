@@ -5,6 +5,10 @@ var filtered = [];
 
 for (i in tweets) {
 	if (tweets[i].geo)
-		filtered.push(tweets[i].geo.coordinates);
+		filtered.push({
+			timestamp: parseInt(tweets[i].timestamp_ms),
+			text: tweets[i].text,
+			geo:{longitude: tweets[i].geo.coordinates[1], latitude: tweets[i].geo.coordinates[0]}
+		});
 }
 console.log(JSON.stringify(filtered));

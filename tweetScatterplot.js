@@ -3,14 +3,14 @@ var margin = {top: 20, right: 20, bottom: 30, left: 40},
     height = 700 - margin.top - margin.bottom;
 
 // setup x 
-var xValue = function(d) { return d[1];}, // data -> value
+var xValue = function(d) { return d.geo.longitude;}, // data -> value
     xScale = d3.scale.linear() // value -> display
                 .range([0, width]);
     xMap = function(d) { return xScale(xValue(d));}, // data -> display
     xAxis = d3.svg.axis().scale(xScale).orient("bottom");
 
 // setup y
-var yValue = function(d) { return d[0];}, // data -> value
+var yValue = function(d) { return d.geo.latitude;}, // data -> value
     yScale = d3.scale.linear() // value -> display
                 .range([height, 0]);
     yMap = function(d) { return yScale(yValue(d));}, // data -> display
@@ -28,7 +28,6 @@ var svg = d3.select("body").append("svg")
 d3.json("data/tweets-sunday30Nov-UK-coordinates.json", function(error, data) {
   xScale.domain([-10, 3]);
   yScale.domain([49, 61]);
-
   // x-axis
   svg.append("g")
       .attr("class", "x axis")
