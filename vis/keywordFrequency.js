@@ -45,11 +45,10 @@ function keywordComparator(a, b) {
 }
 
 //Running in Node.js
-if (typeof module !== 'undefined') {
-    module.exports = {
-        keywordFrequency: keywordFrequency,
-        orderKeywords: orderKeywords
-    }  
+
+module.exports = {
+    keywordFrequency: keywordFrequency,
+    orderKeywords: orderKeywords
 }
 
 

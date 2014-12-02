@@ -48,10 +48,11 @@ d3.json(datafile, function(err, values) {
 
     bar.append("text")
         .attr("dy", ".75em")
-        .attr("y", 6)
-        .attr("x", x.rangeBand()/2)
+        .attr("y", -11)
+        .attr("x", 5)
         .attr("width", x.rangeBand())
-        .attr("text-anchor", "middle")
+        .attr("text-anchor", "start")
+        .attr("transform", "rotate(90)")
         .text(function(d) { return formatCount(d.frequency); });
 
     var t_axis = svg.append("g")
