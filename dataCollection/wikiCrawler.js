@@ -1,36 +1,10 @@
 var Crawler = require('simplecrawler');
 var cheerio = require('cheerio');
-var freq = require('../vis/keywordFrequency.js');
 
 var crawler = new Crawler("en.wikipedia.org", "/wiki/Love");
 crawler.maxDepth = 2;
 crawler.maxConcurrency = 5;
 crawler.downloadUnsupported = false;
-
-crawler.on("crawlstart",function() {
-    // console.log("Crawl starting");
-});
-
-var tf = {};
-var df = {};
-crawler.on("fetchcomplete",function(queueItem, data, res) {
-    // console.log("fetchcomplete",queueItem.url, queueItem.depth);
-    var $ = cheerio.load(data.toString("utf8"));
-    var content = $('#mw-content-text');
-    content.each(function(i, elem) {
-        // console.log(elem);
-        freq.keywordFrequency($(this).text(), tf, df);
-    });
-});
-
-crawler.on("complete",function() {
-    console.log("Finished!");
-
-    var ordered = freq.orderKeywords(tf);
-    console.log(JSON.stringify(ordered));
-    // console.log(ordered.slice(0, 50));
-});
-
 
 var excludeNonWikis = crawler.addFetchCondition(function(parsedURL) {
     return !(parsedURL.path.match(/\/w\//i)
@@ -40,6 +14,25 @@ var excludeNonWikis = crawler.addFetchCondition(function(parsedURL) {
         || parsedURL.path.match(/wiki\/Portal:/i)
         || parsedURL.path.match(/wiki\/Help:/i)
         || parsedURL.path.match(/wiki\/Special:/i) );
+});
+
+function processContentText(i, elem) {
+    // Process the retrieved text element, e.g. extract keywords
+}
+
+crawler.on("crawlstart",function() {
+    console.log("Starting to Crawl");
+});
+
+crawler.on("fetchcomplete",function(queueItem, data, res) {
+    var $ = cheerio.load(data.toString("utf8"));
+    var content = $('#mw-content-text');
+    content.each(processContentText);
+});
+
+crawler.on("complete",function() {
+    console.log("Crawling Finished!");
+    // Do something with the aggregated data
 });
 
 crawler.start();
