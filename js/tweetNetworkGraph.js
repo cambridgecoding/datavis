@@ -20,8 +20,8 @@ function loadData(error, dataset) {
 
 function drawData(graph) {
 	var force = d3.layout.force()
-		// .charge(-100)
-		// .linkDistance(30)
+		.charge(-100)
+		.linkDistance(30)
 		.size([width, height]);
 
 	force.nodes(graph.nodes)
@@ -34,27 +34,26 @@ function drawData(graph) {
 
 	var line = graphics.selectAll("line")
 		.data(graph.links)
-		// .enter()
-		// .append("line")
+		.enter()
+		.append("line")
 
 	var node = graphics.selectAll("circle")
 		.data(graph.nodes)
 		.enter()
 		.append("circle")
-		.attr("r", 5)
-		// .attr("r", function(d){
-		//   return circleSize(d.weight);
-		// })
+		.attr("r", function(d){
+		  return circleSize(d.weight);
+		})
 		.call(force.drag);
 
-	// node.append("title")
-		// .text(function(d) { return d.name; });
+	node.append("title")
+		.text(function(d) { return d.name; });
 
 	force.on("tick", function() {
-	  // 	line.attr("x1", function(d) { return d.source.x; })
-			// .attr("y1", function(d) { return d.source.y; })
-			// .attr("x2", function(d) { return d.target.x; })
-			// .attr("y2", function(d) { return d.target.y; });
+	  	line.attr("x1", function(d) { return d.source.x; })
+			.attr("y1", function(d) { return d.source.y; })
+			.attr("x2", function(d) { return d.target.x; })
+			.attr("y2", function(d) { return d.target.y; });
 
 		node.attr("cx", function(d) { return d.x; })
 			.attr("cy", function(d) { return d.y; }); 
