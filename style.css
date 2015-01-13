@@ -1,0 +1,27 @@
+circle {
+  fill: #4682B4;
+}
+
+line {
+  stroke: #999;
+  stroke-opacity: .6;
+}
+
+body {
+  font: 10px sans-serif;
+}
+
+.bar rect {
+  fill: steelblue;
+  shape-rendering: crispEdges;
+}
+
+.bar text {
+  fill: #fff;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}

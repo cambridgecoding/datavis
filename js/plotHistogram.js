@@ -5,13 +5,13 @@ d3.json(datafile, function(err, values) {
     }
     values.sort(keywordComparator);
 
-    var data = values.slice(0, 80);
+    var data = values.slice(0, 54);
     // A formatter for counts.
     var formatCount = d3.format(",.0f");
 
     var margin = {top: 10, right: 30, bottom: 80, left: 50},
-        width = 1280 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+        width = 900 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
 
     var x = d3.scale.ordinal()
         .rangeRoundBands([0, width], .1)
