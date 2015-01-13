@@ -1,0 +1,16 @@
+{
+  "name": "cca_dataCollection",
+  "description": "A set of tools for collecting online data by Cambridge Coding Academy",
+  "author": {
+    "name": "Cambridge Coding Academy"
+  },
+  "dependencies": {
+    "cheerio": "^0.18.0",
+    "geojson-utils": "^1.1.0",
+    "lodash": "^2.4.1",
+    "oauth": "0.9.9",
+    "simplecrawler": "^0.3.10",
+    "twit": "^1.1.19"
+  },
+  "homepage": "https://cambridgecoding.com"
+}

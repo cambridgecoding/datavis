@@ -1,0 +1,33 @@
+From f9d028d1aa99c403489245b5fffd3ea8f92880c0 Mon Sep 17 00:00:00 2001
+From: Andrius Aucinas <andrius.aucinas@gmail.com>
+Date: Tue, 2 Dec 2014 00:03:47 +0000
+Subject: [PATCH] marking queueItems as fetched and not queued immediately
+ after adding if they exceed maxDepth
+
+---
+ lib/crawler.js | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/lib/crawler.js b/lib/crawler.js
+index 4065cad..c30a280 100644
+--- a/lib/crawler.js
++++ b/lib/crawler.js
+@@ -695,8 +695,14 @@ Crawler.prototype.queueURL = function(url,queueItem) {
+ 					return crawler.emit("queueerror",error,parsedURL);
+ 				}
+ 
+-				crawler.emit("queueadd",newQueueItem,parsedURL);
+ 				newQueueItem.referrer = queueItem ? queueItem.url : null;
++
++                if (!crawler.depthAllowed(newQueueItem)) {
++                        newQueueItem.status = "skip";
++                        newQueueItem.fetched = true;
++                } else {
++                        crawler.emit("queueadd",newQueueItem,parsedURL);
++                }
+ 			}
+ 		);
+ 	}
+-- 
+2.2.0
+
