@@ -46,7 +46,7 @@ d3.json("data/uk.json", function(error, uk) {
     }
 
     
-    d3.json("data/tweets-sunday30Nov-UK-coordinates.json", function(error, inputData) {
+    d3.json("data/tweets-coordinates-1hour.json", function(error, inputData) {
         var startTime = inputData[0].timestamp;
         for (i in inputData) {
             setTimeout(function(input){ 

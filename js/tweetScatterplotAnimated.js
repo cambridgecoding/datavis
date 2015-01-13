@@ -21,20 +21,20 @@ var yValue = function(d) { return d.geo.latitude;}, // data -> value
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-  .append("g")
+    .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 data = [];
-// load data
 
 xScale.domain([-10, 3]);
 yScale.domain([49, 61]);
+
 // x-axis
 svg.append("g")
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis)
-  .append("text")
+    .append("text")
     .attr("class", "label")
     .attr("x", width)
     .attr("y", -6)
@@ -45,7 +45,7 @@ svg.append("g")
 svg.append("g")
     .attr("class", "y axis")
     .call(yAxis)
-  .append("text")
+    .append("text")
     .attr("class", "label")
     .attr("transform", "rotate(-90)")
     .attr("y", 6)
@@ -54,23 +54,23 @@ svg.append("g")
     .text("Latitude");
 
 function refresh() {
-// draw dots
-svg.selectAll(".dot")
-    .data(data)
-  .enter().append("circle")
-    .attr("class", "dot")
-    .attr("r", 2.5)
-    .attr("cx", xMap)
-    .attr("cy", yMap)
-    .style("fill", "rgba(128, 0, 20, 0.2)");
+    // draw dots
+    svg.selectAll(".dot")
+        .data(data)
+        .enter().append("circle")
+        .attr("class", "dot")
+        .attr("r", 2.5)
+        .attr("cx", xMap)
+        .attr("cy", yMap)
+        .style("fill", "rgba(128, 0, 20, 0.2)");
 }
 
-d3.json("data/tweets-sunday30Nov-UK-coordinates.json", function(error, inputData) {
-  var startTime = inputData[0].timestamp;
-  for (i in inputData) {
-    setTimeout(function(input){ 
-      data.push(input);
-      refresh();
-    }, (inputData[i].timestamp - startTime)/100, inputData[i]);  
-  }
+d3.json("data/tweets-coordinates-1hour.json", function(error, inputData) {
+    var startTime = inputData[0].timestamp;
+    for (i in inputData) {
+        setTimeout(function(input){ 
+            data.push(input);
+            refresh();
+        }, (inputData[i].timestamp - startTime)/100, inputData[i]);  
+    }
 });

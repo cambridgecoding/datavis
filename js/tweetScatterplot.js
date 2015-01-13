@@ -25,7 +25,7 @@ var svg = d3.select("body").append("svg")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // load data
-d3.json("data/tweets-sunday30Nov-UK-coordinates.json", function(error, data) {
+d3.json("data/tweets-coordinates-1hour.json", function(error, data) {
   xScale.domain([-10, 3]);
   yScale.domain([49, 61]);
   // x-axis
@@ -52,7 +52,7 @@ d3.json("data/tweets-sunday30Nov-UK-coordinates.json", function(error, data) {
       .style("text-anchor", "end")
       .text("Latitude");
 
-  // draw dots
+  // draw the dots for tweets
   svg.selectAll(".dot")
       .data(data)
     .enter().append("circle")
