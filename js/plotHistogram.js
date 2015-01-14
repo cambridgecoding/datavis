@@ -32,19 +32,23 @@ d3.json(datafile, function(err, values) {
     var svg = d3.select("body").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-      .append("g")
+        .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var bar = svg.selectAll(".bar")
         .data(data)
-      .enter().append("g")
+        .enter().append("g")
         .attr("class", "bar")
-        .attr("transform", function(d) { return "translate(" + x(d.keyword) + "," + y(d.frequency) + ")"; });
+        .attr("transform", function(d) {
+            return "translate(" + x(d.keyword) + "," + y(d.frequency) + ")";
+        });
 
     bar.append("rect")
         .attr("x", 1)
         .attr("width", x.rangeBand())
-        .attr("height", function(d) { return height - y(d.frequency); });
+        .attr("height", function(d) { 
+            return height - y(d.frequency);
+        });
 
     bar.append("text")
         .attr("dy", ".75em")
@@ -56,35 +60,35 @@ d3.json(datafile, function(err, values) {
         .text(function(d) { return formatCount(d.frequency); });
 
     var t_axis = svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);
 
     t_axis.selectAll("text")
-            .attr("y", 10)
-            .attr("x", 5)
-            .attr("dy", ".35em")
-            .attr("transform", "rotate(60)")
-            .style("text-anchor", "start");
+        .attr("y", 10)
+        .attr("x", 5)
+        .attr("dy", ".35em")
+        .attr("transform", "rotate(60)")
+        .style("text-anchor", "start");
 
     t_axis.append("text")
-            .attr("x", width/2)
-            .attr("y", 50)
-            .attr("dy", ".71em")
-            .style("text-anchor", "middle")
-            .style("font-weight", "bold")
-            .style("font-size", "1.4em")
-            .text("Keyword");
+        .attr("x", width/2)
+        .attr("y", 50)
+        .attr("dy", ".71em")
+        .style("text-anchor", "middle")
+        .style("font-weight", "bold")
+        .style("font-size", "1.4em")
+        .text("Keyword");
 
     svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
+        .attr("class", "y axis")
+        .call(yAxis)
         .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", -46)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .style("font-weight", "bold")
-            .style("font-size", "1.4em")
-            .text("Frequency");
+        .attr("transform", "rotate(-90)")
+        .attr("y", -46)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .style("font-weight", "bold")
+        .style("font-size", "1.4em")
+        .text("Frequency");
 });

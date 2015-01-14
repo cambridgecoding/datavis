@@ -12,15 +12,41 @@ var graphics = d3.select("body")
 var projection = d3.geo.orthographic()
 	.center([-4.4, 55.4])
 	.scale(5000)
-	.translate([width / 2, height / 2])
-
-d3.json("data/uk.json", loadData);
+	.translate([width / 2, height / 2]);
 
 function loadData(error, dataset) {
-	if (error)
+	if (error) {
 		console.log(error);
-	else
+	}
+	else {
 		drawData(dataset);
+	}
+}
+
+var zoomed = false;
+function zoom(region) {
+	var z = 3;
+	console.log("Clicked on", region);
+	
+	var x, y;
+	if (!zoomed) {
+		var mouse = d3.mouse(this);
+		x = mouse[0];
+		y = mouse[1];
+		z = 3;
+		zoomed = true;
+	} else {
+		x = width / 2;
+		y = height / 2;
+		z = 1;
+		zoomed = false;
+	}
+	
+	graphics.transition()
+		.attr("transform", 
+		"translate(" + width / 2 + "," + height / 2 + ")"+
+		"scale(" + z + ")"+
+		"translate(" + -x + "," + -y + ")");
 }
 
 function drawData(dataset){
@@ -38,43 +64,55 @@ function drawData(dataset){
 		.enter()
 		.append("path")
 		.attr("d", path)
-		.style("fill", function(d) { return color(d.id); })
+		.style("fill", function(d) { 
+			return color(d.id); 
+		})
 
-	var zoomed = false;
-	function zoom(region) {
-		var z = 3;
-		console.log("Clicked on", region);
-		
-		var x, y;
-		if (!zoomed) {
-			var mouse = d3.mouse(this);
-			x = mouse[0];
-			y = mouse[1];
-			z = 3;
-			zoomed = true;
-		} else {
-			x = width / 2;
-			y = height / 2;
-			z = 1;
-			zoomed = false;
-		}
-		
-		graphics.transition()
-			.attr("transform", 
-			"translate(" + width / 2 + "," + height / 2 + ")"+
-			"scale(" + z + ")"+
-			"translate(" + -width/2 + "," + -height/2 + ")");
-	}
 	graphics.selectAll("path")
 		.on("click", zoom);
 }
 
-d3.json("data/usersGraph.json", function(err, dataset) {
-	var nodeSize = d3.scale.linear()
+function loadUserData(error, dataset){
+	if (error) {
+		console.log(error);
+	}
+	else {
+		drawUserData(dataset);
+	}
+}
+
+var nodeSize;
+function highlightTweet(tweet, i) {
+	graphics
+		.selectAll(".tweet")
+		.transition()
+		.attr("r", function(d){
+			return nodeSize(d.tweets.length);
+		})
+		.style("opacity", 0.2);
+
+	graphics
+		.selectAll(".tweet.user"+i)
+		.transition()
+		.attr("r", 5)
+		.style("opacity", 1);
+
+	graphics
+		.selectAll(".link")
+		.transition()
+		.style("opacity", 0)
+	graphics
+		.selectAll(".link.user"+i)
+		.transition()
+		.style("opacity", 1)
+}
+	
+function drawUserData(dataset) {
+	nodeSize = d3.scale.linear()
 		.domain([1, d3.max(dataset.nodes, function(d){ return d.tweets.length})])
 		.range([3, 6])
 
-	for (var i in dataset.nodes) {
+	for (var i = 0; i < dataset.nodes.length; i++) {
 		var user = dataset.nodes[i];
 		var coordinates = [d3.mean(user.tweets, getLongitude), d3.mean(user.tweets, getLatitude)];
 		user.geo = coordinates;
@@ -89,16 +127,26 @@ d3.json("data/usersGraph.json", function(err, dataset) {
 		})
 		.style("stroke", "#999")
 		.style("opacity", 0.1)
-		.attr("x1", function(d) { return projection(dataset.nodes[d.source].geo)[0]; })
-		.attr("y1", function(d) { return projection(dataset.nodes[d.source].geo)[1]; })
-		.attr("x2", function(d) { return projection(dataset.nodes[d.target].geo)[0]; })
-		.attr("y2", function(d) { return projection(dataset.nodes[d.target].geo)[1]; })
+		.attr("x1", function(d) { 
+			return projection(dataset.nodes[d.source].geo)[0];
+		})
+		.attr("y1", function(d) { 
+			return projection(dataset.nodes[d.source].geo)[1]; 
+		})
+		.attr("x2", function(d) { 
+			return projection(dataset.nodes[d.target].geo)[0]; 
+		})
+		.attr("y2", function(d) { 
+			return projection(dataset.nodes[d.target].geo)[1]; 
+		});
 
 	graphics.selectAll(".tweet")
 		.data(dataset.nodes)
 		.enter()
 		.append("circle")
-		.attr("class", function(d, i){ return "tweet user"+i})
+		.attr("class", function(d, i){ 
+			return "tweet user"+i;
+		})
 		.attr("r", function(d){
 			return nodeSize(d.tweets.length);
 		})
@@ -108,38 +156,16 @@ d3.json("data/usersGraph.json", function(err, dataset) {
 			return "translate(" + projection(d.geo) + ")";
 		});
 
-	function highlightTweet(tweet, i) {
-		graphics
-			.selectAll(".tweet")
-			.transition()
-			.attr("r", function(d){
-				return nodeSize(d.tweets.length);
-			})
-			.style("opacity", 0.2);
-
-		graphics
-			.selectAll(".tweet.user"+i)
-			.transition()
-			.attr("r", 5)
-			.style("opacity", 1);
-
-		graphics
-			.selectAll(".link")
-			.transition()
-			.style("opacity", 0)
-		graphics
-			.selectAll(".link.user"+i)
-			.transition()
-			.style("opacity", 1)
-	}
-
 	graphics.selectAll(".tweet")
 		.on("click", highlightTweet);
+}
 
-	function getLongitude(tweet) {
-		return tweet.geo.coordinates[1];
-	}
-	function getLatitude(tweet) {
-		return tweet.geo.coordinates[0];
-	}
-});
+function getLongitude(tweet) {
+	return tweet.geo.coordinates[1];
+}
+function getLatitude(tweet) {
+	return tweet.geo.coordinates[0];
+}
+
+d3.json("data/uk.json", loadData);
+d3.json("data/usersGraph.json", loadUserData);

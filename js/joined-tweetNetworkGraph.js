@@ -9,6 +9,18 @@ var highlightUserNetwork;
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+	highlightUserNetwork = function(d, i){
+		graphics
+			.selectAll("circle")
+			.transition()
+			.style("fill", "#4682B4");
+
+		graphics
+			.selectAll("circle.component"+d.component)
+			.transition()
+			.style("fill", "#800014");
+	}
+
 	drawNetwork = function (graph) {
 		var force = d3.layout.force()
 			.charge(-40)
@@ -26,15 +38,17 @@ var highlightUserNetwork;
 		var line = graphics.selectAll("line")
 			.data(graph.links)
 			.enter()
-			.append("line")
+			.append("line");
 
 		var node = graphics.selectAll(".networkNode")
 			.data(graph.nodes)
 			.enter()
 			.append("circle")
-			.attr("class", function(d, i) { return "networkNode user"+i+" component"+d.component; })
+			.attr("class", function(d, i) { 
+				return "networkNode user"+i+" component"+d.component; 
+			})
 			.attr("r", function(d){
-			  return circleSize(d.weight);
+				return circleSize(d.weight);
 			})
 			.call(force.drag);
 
@@ -50,18 +64,6 @@ var highlightUserNetwork;
 			node.attr("cx", function(d) { return d.x; })
 				.attr("cy", function(d) { return d.y; }); 
 		});
-
-		highlightUserNetwork = function(d, i){
-			graphics
-				.selectAll("circle")
-				.transition()
-				.style("fill", "#4682B4");
-
-			graphics
-				.selectAll("circle.component"+d.component)
-				.transition()
-				.style("fill", "#800014");
-		}	
 	}
 
 }());

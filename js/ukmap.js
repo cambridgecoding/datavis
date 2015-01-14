@@ -12,10 +12,12 @@ var graphics = d3.select("body")
 d3.json("data/uk.json", loadData);
 
 function loadData(error, dataset) {
-	if (error)
+	if (error) {
 		console.log(error);
-	else
+	}
+	else {
 		drawData(dataset);
+	}
 }
 
 function drawData(dataset){
@@ -24,7 +26,7 @@ function drawData(dataset){
 	var projection = d3.geo.orthographic()
 		.center([-4.4, 55.4])
 		.scale(6000)
-		.translate([width / 2, height / 2])
+		.translate([width / 2, height / 2]);
 
 	var path = d3.geo.path()
 		.projection(projection);
@@ -38,5 +40,5 @@ function drawData(dataset){
 		.enter()
 		.append("path")
 		.attr("d", path)
-		.style("fill", function(d) { return color(d.id); })
+		.style("fill", function(d) { return color(d.id); });
 }

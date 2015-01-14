@@ -12,15 +12,17 @@ var graphics = d3.select("body")
 var projection = d3.geo.orthographic()
     .center([-4.4, 55.4])
     .scale(5000)
-    .translate([width / 2, height / 2])
+    .translate([width / 2, height / 2]);
 
 d3.json("data/uk.json", loadData);
 
 function loadData(error, dataset) {
-    if (error)
+    if (error) {
         console.log(error);
-    else
+    }
+    else {
         drawData(dataset);
+    }
 }
 
 function drawData(dataset){
@@ -38,16 +40,16 @@ function drawData(dataset){
         .enter()
         .append("path")
         .attr("d", path)
-        .style("fill", function(d) { return color(d.id); })
+        .style("fill", function(d) { return color(d.id); });
 }
 
 d3.json("data/usersGraph.json", function(err, dataset) {
     var nodes = dataset.nodes;
     var nodeSize = d3.scale.linear()
         .domain([1, d3.max(dataset.nodes, function(d){ return d.tweets.length})])
-        .range([3, 6])
+        .range([3, 6]);
 
-    for (var i in dataset.nodes) {
+    for (var i = 0; i < dataset.nodes.length; i++) {
         var user = dataset.nodes[i];
         var coordinates = [d3.mean(user.tweets, getLongitude), d3.mean(user.tweets, getLatitude)];
         user.geo = coordinates;
@@ -73,16 +75,23 @@ d3.json("data/usersGraph.json", function(err, dataset) {
         .append("line")
         .style("stroke", "#999")
         .style("opacity", 0.1)
-        .attr("x1", function(d) { return projection(dataset.nodes[d.source].geo)[0]; })
-        .attr("y1", function(d) { return projection(dataset.nodes[d.source].geo)[1]; })
-        .attr("x2", function(d) { return projection(dataset.nodes[d.target].geo)[0]; })
-        .attr("y2", function(d) { return projection(dataset.nodes[d.target].geo)[1]; })
-        
-
-    function getLongitude(tweet) {
-        return tweet.geo.coordinates[1];
-    }
-    function getLatitude(tweet) {
-        return tweet.geo.coordinates[0];
-    }
+        .attr("x1", function(d) { 
+            return projection(dataset.nodes[d.source].geo)[0]; 
+        })
+        .attr("y1", function(d) { 
+            return projection(dataset.nodes[d.source].geo)[1]; 
+        })
+        .attr("x2", function(d) { 
+            return projection(dataset.nodes[d.target].geo)[0]; 
+        })
+        .attr("y2", function(d) { 
+            return projection(dataset.nodes[d.target].geo)[1]; 
+        });
+         
 });
+function getLongitude(tweet) {
+    return tweet.geo.coordinates[1];
+}
+function getLatitude(tweet) {
+    return tweet.geo.coordinates[0];
+}

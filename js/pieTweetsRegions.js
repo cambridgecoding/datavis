@@ -15,32 +15,39 @@ var pie = d3.layout.pie()
     .value(function(d) { return d.tweets; });
 
 var svg = d3.select("body")
-        .append("svg")
-        .attr("width", width)
-        .attr("height", height)
-        .append("g")
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+    .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 d3.json("data/tweetRegionProportions.json", loadData);
 
 function loadData(error, data) {
-    if (!error)
+    if (!error) {
         generateVizPiechart(data);
+    }
 }
 
 function generateVizPiechart(data) {
     var g = svg.selectAll(".arc")
-            .data(pie(data))
+        .data(pie(data))
         .enter().append("g")
-            .attr("class", "arc");
+        .attr("class", "arc");
 
     g.append("path")
         .attr("d", arc)
-        .style("fill", function(d) { return color(d.data.region); });
+        .style("fill", function(d) {
+            return color(d.data.region); 
+        });
 
     g.append("text")
-        .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+        .attr("transform", function(d) { 
+            return "translate(" + arc.centroid(d) + ")";
+        })
         .attr("dy", ".35em")
         .style("text-anchor", "middle")
-        .text(function(d) { return d.data.region; });
+        .text(function(d) { 
+            return d.data.region; 
+        });
 }

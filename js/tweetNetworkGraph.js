@@ -12,10 +12,12 @@ var graphics = d3.select("body")
 d3.json("../data/usersGraph.json", loadData);
 
 function loadData(error, dataset) {
-	if (error)
+	if (error) {
 		console.log(error);
-	else
+	}
+	else {
 		drawData(dataset);
+	}
 };
 
 function drawData(graph) {
@@ -35,14 +37,14 @@ function drawData(graph) {
 	var line = graphics.selectAll("line")
 		.data(graph.links)
 		.enter()
-		.append("line")
+		.append("line");
 
 	var node = graphics.selectAll("circle")
 		.data(graph.nodes)
 		.enter()
 		.append("circle")
 		.attr("r", function(d){
-		  return circleSize(d.weight);
+		    return circleSize(d.weight);
 		})
 		.call(force.drag);
 
