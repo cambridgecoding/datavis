@@ -9,7 +9,7 @@ var keywordFrequency = function(text, hist, df){
     hasWord = {};
     var regexp = /[\w'@#]+/g;
     var words = text.match(regexp);
-    for(var i in  words) {
+    for(var i = 0; i < words.length; i++) {
         if(words[i].length >1 ) {
             var word = words[i].toLowerCase();
             if (stopWords.indexOf(word) == -1) {

@@ -1,8 +1,9 @@
 d3.json("data/usersGraph.json", loadData);
 
 function loadData(error, dataset) {
-	if (error)
+	if (error) {
 		console.log(error);
+	}
 	else {
 		drawTweetsMap(dataset);
 		drawNetwork(dataset);
