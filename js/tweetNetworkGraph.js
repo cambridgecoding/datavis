@@ -9,7 +9,7 @@ var graphics = d3.select("body")
 	.append("g")
 	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json("../data/usersGraph.json", loadData);
+d3.json("data/usersGraph.json", loadData);
 
 function loadData(error, dataset) {
 	if (error) {
