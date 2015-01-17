@@ -103,7 +103,6 @@ var highlightUser;
 			.selectAll(".link.component"+d.component)
 			.transition()
 			.style("opacity", 1)
-
 	}
 
 	drawTweetsMap = function(dataset) {

@@ -19,7 +19,7 @@ stream.on('tweet', processTweet);
 function processTweet(tweet) {
 	var regexp = /[\w'@#]+/g;
 	var words = tweet.text.match(regexp);
-	for (var i in words) {
+	for (var i = 0; i < words.length; i++) {
 		var keyword = words[i];
 		if (keywords[keyword])
 			keywords[keyword]++;
