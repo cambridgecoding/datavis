@@ -7,13 +7,14 @@ var graphics = d3.select("body")
 	.attr("height", height);
 
 // Don't forget to change the data file name!
-d3.json("DATAFILE", loadData);
+d3.json("data/uk.json", loadData);
 
 function loadData(error, dataset) {
 	if (error) {
 		console.log(error);
 	}
 	else {
+		console.log(dataset);
 		drawData(dataset);
 	}
 };
