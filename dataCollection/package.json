@@ -4,6 +4,7 @@
   "author": {
     "name": "Cambridge Coding Academy"
   },
+  //list of different libraries, incl twit form twehre we take data in this case
   "dependencies": {
     "cheerio": "^0.18.0",
     "geojson-utils": "^1.1.0",
