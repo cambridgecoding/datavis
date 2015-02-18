@@ -9,12 +9,9 @@ var twit = new Twit({
 
 var uk = [ '-9.23', '49.84', '2.69', '60.85' ];
 var stream = twit.stream('statuses/filter', { locations: uk })
-var log = fs.createWriteStream('tweets.log');
 
 stream.on('tweet', processTweet);
 
 function processTweet(tweet) {
-	var regexp = /[\w'@#]+/g;
-	var words = tweet.text.match(regexp);
-	log.write(words);
+  console.log(tweet);
 };
